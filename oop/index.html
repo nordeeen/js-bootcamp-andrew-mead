@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Belajar Http Request dan Ajax</title>
+  </head>
+  <body>
+    <form id="create-user">
+      <label for="name">Name</label>
+      <input name="name" id="name" />
+      <br /><br />
+      <label for="job">Job</label>
+      <input name="job" id="job" />
+      <br /><br />
+      <button type="submit" id="submit-form">Create User</button>
+    </form>
+    <div id="info-box"></div>
+  </body>
+  <script>
+    let create_user_form = document.getElementById('create-user'),
+      info_box = document.getElementById('info-box');
+
+    create_user_form.addEventListener('submit', e => {
+      info_box.innerHTML = 'permintaan sedang dilakukan ...';
+      let input_name = document.querySelector('input[name=name]').value,
+        input_job = document.querySelector('input[name=job]').value;
+
+      let data = new XMLHttpRequest();
+      data.open('POST', 'https://reqres.in/api/users');
+      data.setRequestHeader(
+        'Content-Type',
+        'application/x-www-form-urlencoded'
+      );
+      data.send(`name=${input_name}&job=${input_job}`);
+      data.addEventListener('load', () => {
+        info_box.innerHTML =
+          'Permintaan telah selesai. <br> Status:' +
+          data.status +
+          '<br> Response Text:' +
+          data.responseText;
+        console.log(data.responseText);
+      });
+
+      e.preventDefault();
+    });
+  </script>
+  <script src="httpresquest-ajax.js"></script>
+</html>
